@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="./js/garden.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>生日快乐！</title>
+    <title>小兔子，生日快乐！</title>
     <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
     <style>
         html {
             height: 100%;
@@ -90,14 +91,14 @@
 </div>
 <canvas class="canvas" width="1820" height="905"></canvas>
 <p class="text" style="color: #ed3073;">
-    世界已经有你
+    我的世界已经有你
     <br/>
     <span id="span_dt_dt"></span>
 </p>
 <script language="javascript">
     function show_date_time() {
         window.setTimeout("show_date_time()", 1000);
-        BirthDay = new Date("12/12/1999 00:00:00");
+        BirthDay = new Date("10/05/2022 20:00:00");
         today = new Date();
         timeold = (today.getTime() - BirthDay.getTime());
         sectimeold = timeold / 1000
@@ -119,7 +120,8 @@
         init: function () {
             S.Drawing.init('.canvas');
             document.body.classList.add('body--ready');
-            S.UI.simulate("宝儿|生日快乐哟|#countdown 3|#rectangle 15x15|#circle 12 |#time");
+            //S.UI.simulate("从此以后|对我而言|未来的每一年|今天都是特别|冬月初五|在我生命中|有了不同的颜色|婧儿|生日快乐哟！|#countdown 3|#rectangle 15x15|#circle 12 |#time");
+            S.UI.simulate("此后|每年今日|于我不同|冬月初五|在我生命中|有了不同颜色|婧儿|生日快乐哟！|#countdown 3|#time");
             S.Drawing.loop(function () {
                 S.Shape.render();
             });
@@ -223,6 +225,7 @@
                                 if (sequence.length === 0) {
                                     S.Shape.switchShape(S.ShapeBuilder.letter(''));
                                 } else {
+                                    window.open('result.html', '_self');
                                     performAction(sequence);
                                 }
                             } else {
@@ -239,6 +242,9 @@
                         value = parseInt(value) || maxShapeSize;
                         value = Math.min(value, maxShapeSize);
                         S.Shape.switchShape(S.ShapeBuilder.circle(value));
+                        break;
+                    case 'heartshape':
+                        S.Shape.switchShape(S.ShapeBuilder.heartshape());
                         break;
                     case 'time':
                         var t = formatTime(new Date());
@@ -377,10 +383,10 @@
         }
     };
     S.ShapeBuilder = (function () {
-        var gap = 13,
+        var gap = 10,
             shapeCanvas = document.createElement('canvas'),
             shapeContext = shapeCanvas.getContext('2d'),
-            fontSize = 500,
+            fontSize = 600,
             fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
         function fit() {
             shapeCanvas.width = Math.floor(window.innerWidth / gap) * gap;
@@ -435,6 +441,7 @@
             imageFile: function (url, callback) {
                 var image = new Image(),
                     a = S.Drawing.getArea();
+                image.crossOrigin = '';
                 image.onload = function () {
                     shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
                     shapeContext.drawImage(this, 0, 0, a.h * 0.6, a.h * 0.6);
@@ -451,6 +458,29 @@
                 shapeContext.beginPath();
                 shapeContext.arc(r * gap, r * gap, r * gap, 0, 2 * Math.PI, false);
                 shapeContext.fill();
+                shapeContext.closePath();
+                return processCanvas();
+            },
+            heartshape: function () {
+                shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
+                shapeContext.beginPath();
+                var width = shapeContext.width;
+                var height = shapeContext.height;
+                let x, y;
+                let t = -3;
+                let inte = setInterval(function() {
+                        if(t <= 3){
+                            x = 16 * Math.pow(Math.sin(t), 3);
+                            y = 13 * Math.cos(t) - 5 * Math.cos(t * 2) - 2 * Math.cos(t *3) - Math.cos(t * 4);
+                            t = t + 0.002;
+                            x = x * width/35;
+                            y = y * height/35;
+                            shapeContext.fillRect(x + width/2, height/2 - y, 1, 1);
+                        }
+                        else{
+                            clearInterval(inte);
+                        }
+                    }, 10);
                 shapeContext.closePath();
                 return processCanvas();
             },
@@ -574,7 +604,7 @@
 </script>
 <!--//音乐可改-->
 <audio autoplay="autoplay" loop="loop">
-    <source src="http://m10.music.126.net/20180509183512/5ae461e9a42675d782840bf139b05c60/ymusic/e492/ea7a/6a27/8799d19e52d9bbe3ae15febb03d7efdb.mp3" type="audio/mpeg">
+    <!--<source src="http://m10.music.126.net/20180509183512/5ae461e9a42675d782840bf139b05c60/ymusic/e492/ea7a/6a27/8799d19e52d9bbe3ae15febb03d7efdb.mp3" type="audio/mpeg">-->
 </audio>
 </body>
 </html>
